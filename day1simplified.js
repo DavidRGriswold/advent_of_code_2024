@@ -3,7 +3,7 @@
  * input stored inside a file called data1.txt
  */
 
-/* These first 7 lines simply read the input into a single string called input */
+/* These first lines simply read the input into a single string called input */
 var fname = process.argv[2];
 console.log("Running with input data " + fname);
 var fs = require('fs'),
