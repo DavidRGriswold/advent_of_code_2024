@@ -14,17 +14,23 @@ var fs = require('fs'),
 let input = fs.readFileSync(filePath).toString();
 let lines = input.split("\n");
 
-// converts line from an array of strings to an array of numeric arrays, using 
-// the split and map functions
-lines = lines.map((e)=>e.split(/\W+/).map(Number));
+let part1Count = 0;
+let part2Count = 0;
+for (let line of lines) {
+    let splitLine = line.split(" ");
+    //convert from strings to numbers
+    for (let i = 0; i < splitLine.length; i++) {
+        splitLine[i] = Number(splitLine[i]);
+    }
+    // the safe and pdSafe methods tell you if a line is safe
+    // by the rules of part1 and part 2
+    if (safe(splitLine)) part1Count++;
+    if (pdSafe(splitLine)) part2Count++;
 
-// lines.map(safe) creates an array of true/false based on whether each line is safe
-// then .filter ((e)=>e) removes the false statements
-// then .length tells us how many trues. So these two lines are the answers to
-// parts 1 and 2
-
-console.log(lines.map(safe).filter((e)=>e).length);
-console.log(lines.map(pdSafe).filter((e)=>e).length);
+}
+// output the results
+ console.log(part1Count);
+ console.log(part2Count);
 
 /**  Returns true if a line is safe by part 1 definition
  * @param {Array<Number>} row */
@@ -42,6 +48,7 @@ function safe(row) {
 function pdSafe(row) {
     if (safe(row)) return true;
     for (let i = 0; i < row.length; i++) {
+        // toSpliced used this way makes a copy with an element removed
         if (safe(row.toSpliced(i,1))) return true;
     }
     return false;
