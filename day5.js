@@ -76,8 +76,10 @@ function midSum(updates) {
  * @param {Number} v2 
  * @returns 
  */
-function orderFunction(v1, v2) {
+function orderFunction(v1, v2, update) {
   if (rules[v1] && rules[v1].includes(v2)) return -1;
   if (rules[v2] && rules[v2].includes(v1)) return 1;
-  return 0;
-}
+  console.log("no rule for " + v1 + " and " + v2);
+    
+  }
+
