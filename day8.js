@@ -22,7 +22,9 @@ for (let y = 0; y < h; y++) {
     }
   }
 }
+/** @type {Object.<string,number[]} */
 let antinodes = {};
+/** @type {string[]} Use string versions to make .includes work*/
 let uniqueNodes = [];
 for (let [c, v] of Object.entries(antennaCoords)) {
   for (let i = 0; i < v.length - 1; i++) {
@@ -45,8 +47,9 @@ for (let [c, v] of Object.entries(antennaCoords)) {
     }
   }
 }
-console.log(uniqueNodes.length);
-
+console.log(uniqueNodes.length); // part 1
+// same idea, but loop the antenna movement rather than 
+// simply counting once
 for (let [c, v] of Object.entries(antennaCoords)) {
   for (let i = 0; i < v.length - 1; i++) {
     for (let j = i + 1; j < v.length; j++) {
@@ -72,4 +75,4 @@ for (let [c, v] of Object.entries(antennaCoords)) {
     }
   }
 }
-console.log(uniqueNodes.length);
+console.log(uniqueNodes.length); // part 2
