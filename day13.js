@@ -9,43 +9,47 @@ filePath = path.join(__dirname, fname);
 let input = fs.readFileSync(filePath).toString();
 let machines = parseInput();
 
-/* 
+console.log(countTokens(0));
+console.log(countTokens(10000000000000));
+
+/* This is the algebra to find the solution for a machine 
 Axk + Bxj = Px
 Ayk + Byj = Py
-(Px-Bxj)/Ax = (Py-Byj)/Ay
-Px/Ax - (Bx/Ax)j = Py/Ay - (By/Ay)j
-Px/Ax - Py/Ay = (Bx/Ax - By/Ay)j
-j = (PxAy/AxAy - PyAx/AxAy)/(BxAy/AxAy - AxBy/AxAy)
-j = (PxAy-PyAx)/(AyBx-AxBy)
+---------------
+(Px-Bxj)/Ax = k = (Py-Byj)/Ay  :: isolate k in both eqs then combine
+Px/Ax - (Bx/Ax)j = Py/Ay - (By/Ay)j :: distribute
+Px/Ax - Py/Ay = (Bx/Ax - By/Ay)j :: combine like terms 
+j = (Px/Ax - Py/Ay)/(Bx/Ax - By/Ay) :: divide
+j = (PxAy/AxAy - PyAx/AxAy)/(BxAy/AxAy - AxBy/AxAy) ::common denoms
+j = (PxAy-PyAx)/(AyBx-AxBy) ::combine and divide - the AxAy cancels
 
 Test: (8400*34 - 5400*94)/(34*22 - 94*67) = 40, yay
+k = (Px - Bxj)/Ay and we are done
 */
-let tokens = 0;
-for (let m of machines) {
-  let bcount = (m.Px * m.Ay - m.Py * m.Ax) / (m.Ay * m.Bx - m.Ax * m.By);
-  if (Number.isInteger(bcount)) {
-    let acount = (m.Py - m.By * bcount) / m.Ay;
-    if (Number.isInteger(acount)) {
-      tokens += acount * 3 + bcount;
-    }
-  }
-}
-console.log(tokens);
-tokens = 0;
-for (let m of machines) {
-  m.Px += 10000000000000;
-  m.Py += 10000000000000;
-  let bcount = (m.Px * m.Ay - m.Py * m.Ax) / (m.Ay * m.Bx - m.Ax * m.By);
-  if (Number.isInteger(bcount)) {
-    let acount = (m.Py - m.By * bcount) / m.Ay;
-    if (Number.isInteger(acount)) {
-      tokens += acount * 3 + bcount;
-    }
-  }
-}
-console.log(tokens);
+
 
 /**
+ * Calculates the tokens, first adding a specified amount to each prize
+ * @param {number} add amount to add to prize
+ * @return {number} tokens
+ */
+function countTokens(add) {
+  let tokens = 0;
+  for (let m of machines) {
+    m.Px += add;
+    m.Py += add;
+    let bcount = (m.Px * m.Ay - m.Py * m.Ax) / (m.Ay * m.Bx - m.Ax * m.By);
+    if (Number.isInteger(bcount)) {
+      let acount = (m.Py - m.By * bcount) / m.Ay;
+      if (Number.isInteger(acount)) {
+        tokens += acount * 3 + bcount;
+      }
+    }
+  }
+  return tokens;
+}
+/**
+ * Parses the input and returns as an array of machine objects
  * @returns {{Ax:number, Ay:number, Bx:number, By:number,Px: number, Py:number}[]} machines
  */
 function parseInput() {
